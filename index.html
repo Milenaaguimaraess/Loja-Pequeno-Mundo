@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+      <link rel="icon" href="img/LOGO.png" type="image/png">
+
+<head>
+    <style>
+        * {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-image: url('img/fundo2.png');  
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+}
+
+carrossel-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+    }
+
+   .carrossel {
+      position: relative;
+      width: 1700px;
+      height: 400px;
+      overflow: hidden;
+      border-radius: 10px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+      margin: 0 auto;
+    }
+
+    .slides {
+      display: flex;
+      transition: transform 0.5s ease-in-out;
+      width: 100%;
+    }
+
+    .slide {
+      min-width: 100%;
+      height: 400px;
+    }
+
+    .slide img {
+      width: 100%;
+      height: 400px;
+      object-fit: cover;
+    }
+
+    .nav-button {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      border: none;
+      padding: 12px;
+      cursor: pointer;
+      font-size: 18px;
+      z-index: 1;
+    }
+
+    .prev {
+      left: 10px;
+    }
+
+    .next {
+      right: 10px;
+    }
+
+    
+
+
+.produtos {
+  display: flex;
+  justify-content: center;
+  gap: 32px;
+  padding: 40px 20px;
+  background-color: #FFF4E8;
+  flex-wrap: wrap;
+}
+
+.card {
+  background-color: white;
+  border-radius: 16px;
+  padding: 20px;
+  text-align: center;
+  width: 260px;
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.08);
+  transition: transform 0.3s ease;
+}
+
+.card img {
+  width: 100%;
+  border-radius: 8px;
+  margin-bottom: 12px;
+}
+
+.card h3 {
+  font-size: 16px;
+  margin-bottom: 6px;
+  color: #333;
+}
+
+.card p {
+  font-size: 14px;
+  margin-bottom: 12px;
+  color: #333;
+}
+
+.card button {
+  background-color: #72D94C;
+  color: white;
+  border: none;
+  border-radius: 25px;
+  padding: 8px 24px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.card button:hover {
+  background-color: #64c343;
+}
+.categorias {
+  display: flex;
+  justify-content: center;
+  gap: 32px;
+  padding: 40px 20px;
+  flex-wrap: wrap;
+}
+
+.categoria-card {
+  position: relative;
+  width: 700px;
+  border-radius: 12px;
+  overflow: hidden;
+  text-decoration: none;
+}
+
+.categoria-card img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.categoria-label {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #8AC0BF;
+  color: white;
+  padding: 10px 24px;
+  border-radius: 25px;
+  font-family: 'DM Serif Display', serif;
+  font-size: 18px;
+}
+
+
+    .sobre {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 40px;
+      padding: 60px 30px;
+    }
+
+    .sobre-imagem {
+      flex: 1 1 300px;
+      max-width: 400px;
+    }
+
+    .sobre img {
+      width: 900px;
+      margin-left: -300px;
+    }
+
+    .sobre-imagem img:hover {
+      transform: scale(1.05);
+    }
+
+    .sobre-texto {
+      flex: 1 1 400px;
+      max-width: 600px;
+      animation: fadeIn 1.5s ease forwards;
+      opacity: 0;
+    }
+
+    .sobre-texto h2 {
+      font-size: 28px;
+      margin-bottom: 20px;
+      color: #8AC0BF;
+    }
+
+    .sobre-texto p {
+  font-size: 17px;
+      line-height: 1.7;
+      color: #333;
+      margin-bottom: 10px;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @media (max-width: 768px) {
+      .sobre {
+        flex-direction: column;
+        text-align: center;
+      }
+
+      .sobre-texto h2 {
+        font-size: 24px;
+      }
+    }
+    
+.galeria-roupas {
+  padding: 60px 20px;
+  text-align: center;
+}
+
+.galeria-roupas h1 {
+  font-size: 32px;
+  margin-bottom: 40px;
+  font-family: 'DM Serif Display', serif;
+  color: #8AC0BF;
+}
+
+.galeria-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 30px;
+}
+
+.item {
+  position: relative;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.item img {
+  width: 400px;
+  height: 600PX;
+  display: block;
+  border-radius: 12px;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.item:hover img {
+  transform: scale(1.03);
+}
+
+.item button {
+  position: absolute;
+  bottom: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #8AC0BF;
+  color: white;
+  border: none;
+  border-radius: 25px;
+  padding: 8px 20px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.item button:hover {
+  background-color: #5cc13b;
+}
+
+@media (max-width: 768px) {
+  .item {
+    width: 100%;
+    max-width: 320px;
+  }
+}
+
+
+    </style>
+  <meta charset="UTF-8">
+  <title>Pequeno Mundo</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div id="header-container"></div>
+
+<br><br><br>
+<div class="carrossel">
+    <div class="slides" id="slides">
+      <div class="slide"><img src="img/INDEX/carrossel2.png" alt="Imagem 1"></div>
+      <div class="slide"><img src="img/INDEX/carrossel.png" alt="Imagem 2"></div>
+      <!-- <div class="slide"><img src="https://picsum.photos/id/1018/800/400" alt="Imagem 3"></div> -->
+    </div>
+    <button class="nav-button prev" onclick="voltarSlide()">&#10094;</button>
+    <button class="nav-button next" onclick="avancarSlide()">&#10095;</button>
+  </div>
+
+<br><br>
+<section class="galeria-roupas">
+  <h1>Coleção 2025 - ESTAÇÕES DO ANO</h1>
+
+  <div class="galeria-container">
+    <div class="item">
+      <img src="img/DESTAQUES/INVERNO.png" alt="Imagem 1">
+      <button>INVERNO</button>
+    </div>
+    <div class="item">
+      <img src="img/DESTAQUES/praia.jpg" alt="Imagem 2">
+      <button>VERÃO</button>
+    </div>
+    <div class="item">
+      <img src="img/DESTAQUES/outono.jpg" alt="Imagem 3">
+      <button>OUTONO</button>
+    </div>
+    <div class="item">
+      <img src="img/DESTAQUES/primavera.jpg" alt="Imagem 4">
+      <button>PRIMAVERA</button>
+    </div>
+  </div>
+</section>
+
+  <section class="categorias">
+  <a href="Meninas.html" class="categoria-card">
+    <img src="img/INDEX/MENINA BANNER.png" alt="Meninas">
+    <div class="categoria-label">Meninas</div>
+  </a>
+
+  <a href="Meninos.html" class="categoria-card">
+    <img src="img/INDEX/MENINO BANNER.png" alt="Meninos">
+    <div class="categoria-label">Meninos</div>
+  </a>
+</section>
+
+<section class="sobre">
+    <img src="img/INDEX/Mancha.png" alt="Criança sorrindo com blusa amarela">
+
+  <div class="sobre-texto">
+    <h2>Aqui no Pequeno Mundo...</h2>
+    <p>Vestir a infância é mais do que uma missão — é um gesto de amor, um carinho bordado em cada costura. Aqui, cada peça é pensada com cuidado para oferecer o que há de melhor em conforto, qualidade e estilo, acompanhando cada passo, sorriso e descoberta dos pequenos.</p>
+    <p>Do RN aos 11 anos, nossas roupas são feitas para abraçar cada fase do crescimento com leveza e alegria. Porque a infância é um universo mágico, onde cada dia é uma nova aventura — e todo aventureiro merece estar preparado com um look especial!</p>
+    <p>Mais do que moda infantil, oferecemos momentos. Momentos de brincadeira, de família reunida, de fotos espontâneas, de sorrisos no espelho. Acreditamos que se vestir pode ser divertido, criativo e cheio de personalidade, e por isso, nossas coleções são coloridas, modernas e feitas para acompanhar o ritmo da infância.</p>
+  </div>
+</section>
+
+
+
+
+<div id="footer-container"></div>
+
+<script>
+  fetch('Header.html')
+    .then(response => response.text())
+    .then(data => {
+      document.getElementById('header-container').innerHTML = data;
+    })
+    .catch(error => console.error('Erro ao carregar o header:', error));
+
+        fetch('footer.html')
+    .then(response => response.text())
+    .then(data => {
+      document.getElementById('footer-container').innerHTML = data;
+    })
+    .catch(error => console.error('Erro ao carregar o footer:', error));
+
+
+  const slides = document.getElementById('slides');
+    const totalSlides = slides.children.length;
+    let index = 0;
+
+    function mostrarSlide(i) {
+      index = (i + totalSlides) % totalSlides;
+      slides.style.transform = `translateX(-${index * 100}%)`;
+    }
+
+    function avancarSlide() {
+      mostrarSlide(index + 1);
+    }
+
+    function voltarSlide() {
+      mostrarSlide(index - 1);
+    }
+
+    setInterval(() => {
+      avancarSlide();
+    }, 6000); 
+</script>
+
+</body>
+</html>

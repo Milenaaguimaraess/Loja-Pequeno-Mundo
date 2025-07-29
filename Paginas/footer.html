@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rodapé Pequeno Mundo</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+    }
+
+    .rodape {
+      background-color: #f7aab4;
+      padding: 30px ;
+    }
+
+    .rodape-container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      max-width: 1200px;
+      gap: 30px;
+    }
+
+    .logo-rodape {
+        margin-left: 50px;
+      width: 180px;
+      height: auto;
+
+    }
+
+    .contatos-container {
+      display: flex;
+      gap: 40px;
+      flex-wrap: wrap;
+    }
+
+    .contatos {
+      color: #111;
+      font-size: 16px;
+      line-height: 1.6;
+      min-width: 180px;
+    }
+
+    .contatos p {
+      margin: 4px 0;
+    }
+
+    @media (max-width: 768px) {
+      .rodape-container {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+      }
+
+      .contatos-container {
+        justify-content: center;
+      }
+    }
+  
+.redes a {
+  color: #fff;
+  background-color: #f7aab4;
+  padding: 12px;
+  border-radius: 100%;
+  font-size: 20px;
+  text-decoration: none;
+  transition: background 0.3s;
+}
+
+.redes a:hover {
+  background-color: #e48a97;
+}
+
+  </style>
+</head>
+<body>
+
+  <footer class="rodape">
+    <div class="rodape-container">
+      <img src="img/LOGO.png" alt="Logo Pequeno Mundo" class="logo-rodape">
+
+      <div class="contatos-container">
+        <div class="contatos">
+          <p><strong>Entre em contato</strong></p>
+          <p>11 99724-2134</p>
+          <p>Loja Pequeno Mundo</p>
+          <p>@pequenomundoloja</p>
+        </div>
+        <div class="contatos">
+          <p><strong>Localização</strong></p>
+          <p>QNN 34 conj B lote 34 - Brasilia</p>
+          <p>QNG 89 conj J lote 54 - Maranhão</p>
+          <p>SHAPS 987 conj I lote 9 - Xique Xique Bahia</p>
+        </div>
+        <div class="contatos">
+          <p><strong>Redes Sociais</strong></p>
+          <div class="redes">
+          <p> <a href="https://www.instagram.com/seuperfil" target="_blank"><i class="fab fa-instagram"></i></a>
+  <a href="https://www.facebook.com/seupagina" target="_blank"><i class="fab fa-facebook-f"></i></a>
+  <a href="https://wa.me/5599999999999" target="_blank"><i class="fab fa-whatsapp"></i></a>
+</p>
+    </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>

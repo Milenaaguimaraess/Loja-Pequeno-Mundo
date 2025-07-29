@@ -1,0 +1,98 @@
+<!-- cliente.html -->
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Meus Pedidos</title>
+      <link rel="icon" href="img/LOGO.png" type="image/png">
+
+  <style>
+    *{
+      padding: 0%;
+      margin: 0%;
+    }
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #fff8fb;
+    }
+
+    h1 {
+      text-align: center;
+      color: #d81b60;
+      margin-bottom: 30px;
+    }
+
+    .pedido {
+      background-color: #ffffff;
+      border: 2px solid #f8bbd0;
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    }
+
+    .pedido h2 {
+      margin: 0 0 10px;
+      font-size: 1.2rem;
+      color: #333;
+    }
+
+    .status {
+      display: flex;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .etapa {
+      flex: 1;
+      text-align: center;
+      padding: 8px 12px;
+      border-radius: 10px;
+      background-color: #f1f1f1;
+      font-weight: bold;
+      font-size: 0.9rem;
+      color: #999;
+    }
+
+    .ativo {
+      background-color: #f06292;
+      color: white;
+      box-shadow: 0 0 8px rgba(240, 98, 146, 0.6);
+      transform: scale(1.05);
+    }
+  </style>
+</head>
+<body>
+  <div id="header-container"></div>
+<br>
+  <h1>🛍️ Meus Pedidos</h1>
+  <div id="listaPedidos"></div>
+<div id="footer-container"></div>
+
+  <script>
+     fetch('Header.html')
+    .then(res => res.text())
+    .then(html => document.getElementById('header-container').innerHTML = html);
+
+    const lista = document.getElementById('listaPedidos');
+    const pedidos = JSON.parse(localStorage.getItem('pedidos')) || [];
+
+    const statusList = ['processando', 'pago', 'enviado', 'entregue'];
+
+    pedidos.forEach(pedido => {
+      const div = document.createElement('div');
+      div.className = 'pedido';
+      div.innerHTML = `
+        <h2>Pedido: ${pedido.nome}</h2>
+        <div class="status">
+          ${statusList.map(status => `
+            <div class="etapa ${status === pedido.status ? 'ativo' : ''}">${status.charAt(0).toUpperCase() + status.slice(1)}</div>
+          `).join('')}
+        </div>
+      `;
+      lista.appendChild(div);
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Carrinho de Compras</title>
+      <link rel="icon" href="img/LOGO.png" type="image/png">
+
+  <style>
+     body{
+         margin: 0;
+      padding: 0;
+     }
+     .container{
+        margin: right 50px ;
+        margin-left: 50px;
+     }
+     h1{
+        margin: 50px;
+        color: #e78bb6;
+        text-align: center;
+     }
+    .produto {
+      border-bottom: 1px solid #ccc;
+      padding: 10px 0;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .produto img {
+        margin-left: 100px;
+      width: 200px;
+      height: 300px;
+      object-fit: contain;
+      border-radius: 6px;
+    }
+    .info {
+      flex: 1;
+    }
+    .info p {
+      font-size: 20px;
+      margin: 20px 0;
+    }
+    .btn-remover {
+        margin-right: 100px;
+      background-color: #ff4c4c;
+      border: none;
+      color: white;
+      padding: 10px 10px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+     #total {
+      font-weight: bold;
+      margin-top: 20px;
+      font-size: 1.2em;
+    }
+    .fim #cupomContainer {
+      margin-top: 20px;
+    }
+    .fim #cupomInput {
+      padding: 6px;
+      width: 200px;
+      font-size: 1em;
+    }
+    .fim #aplicarCupomBtn {
+      padding: 6px 12px;
+      margin-left: 10px;
+      cursor: pointer;
+      background-color: #65be11;
+      border: none;
+      color: white;
+      font-weight: bold;
+      border-radius: 6px;
+    }
+    .fim #pagarBtn {
+      margin-top: 20px;
+      padding: 10px 20px;
+      font-weight: bold;
+      font-size: 1.1em;
+      cursor: pointer;
+      background-color: #f072a7;
+      color: white;
+      border: none;
+      border-radius: 10px;
+    }
+  </style>
+</head>
+<body>
+      <div id="header-container"></div>
+        <div class="container">
+
+  <h1>Meu Carrinho</h1>
+  <div id="produtosContainer"></div>
+
+  <div id="total">Total: R$ 0,00</div>
+<div class="fim">
+  <div id="cupomContainer">
+    <input type="text" id="cupomInput" placeholder="Digite o cupom de desconto" />
+    <button id="aplicarCupomBtn">Aplicar Cupom</button>
+    <div id="mensagemCupom" style="margin-top:10px; color: green; font-weight: bold;"></div>
+  </div>
+
+  <button id="pagarBtn">Pagar</button>
+  </div>
+</div>
+<br><br>
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+<div id="footer-container"></div>
+
+  <script>
+     fetch('Header.html')
+    .then(res => res.text())
+    .then(html => document.getElementById('header-container').innerHTML = html);
+
+    
+        fetch('footer.html')
+    .then(response => response.text())
+    .then(data => {
+      document.getElementById('footer-container').innerHTML = data;
+    })
+    .catch(error => console.error('Erro ao carregar o footer:', error));
+
+
+    const produtosContainer = document.getElementById('produtosContainer');
+    const totalEl = document.getElementById('total');
+    const cupomInput = document.getElementById('cupomInput');
+    const aplicarCupomBtn = document.getElementById('aplicarCupomBtn');
+    const mensagemCupom = document.getElementById('mensagemCupom');
+    const pagarBtn = document.getElementById('pagarBtn');
+
+    let carrinho = JSON.parse(localStorage.getItem('carrinho')) || [];
+    let descontoAtivo = false;
+    let descontoValor = 0;
+
+    function formatarPreco(precoStr) {
+   
+      return parseFloat(precoStr.replace('R$', '').replace('.', '').replace(',', '.').trim());
+    }
+
+    function formatarPrecoReal(valor) {
+      return valor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+    }
+
+    function salvarCarrinho() {
+      localStorage.setItem('carrinho', JSON.stringify(carrinho));
+    }
+
+    function renderizarCarrinho() {
+      produtosContainer.innerHTML = '';
+
+      if (carrinho.length === 0) {
+        produtosContainer.innerHTML = '<p>Seu carrinho está vazio.</p>';
+        totalEl.textContent = 'Total: R$ 0,00';
+        return;
+      }
+
+      carrinho.forEach((produto, index) => {
+        const preco = formatarPreco(produto.preco);
+
+        const produtoDiv = document.createElement('div');
+        produtoDiv.classList.add('produto');
+
+        produtoDiv.innerHTML = `
+          <input type="checkbox" checked data-index="${index}" class="selecionarProduto" />
+          <img src="${produto.imagem}" alt="${produto.nome}" />
+          <div class="info">
+            <p><strong>${produto.nome}</strong></p>
+            <p>Tamanho: ${produto.tamanho || 'Não selecionado'}</p>
+            <p>Cor: <span style="display:inline-block; width: 15px; height: 15px; background-color: ${produto.cor || '#ccc'}; border-radius: 50%; border: 1px solid #000;"></span></p>
+            <p>Preço: ${produto.preco}</p>
+          </div>
+          <button class="btn-remover" data-index="${index}">Remover</button>
+        `;
+
+        produtosContainer.appendChild(produtoDiv);
+      });
+
+      atualizarTotal();
+
+      document.querySelectorAll('.selecionarProduto').forEach(checkbox => {
+        checkbox.addEventListener('change', () => {
+          atualizarTotal();
+        });
+      });
+
+      document.querySelectorAll('.btn-remover').forEach(botao => {
+        botao.addEventListener('click', (e) => {
+          const idx = e.target.getAttribute('data-index');
+          carrinho.splice(idx, 1);
+          salvarCarrinho();
+          renderizarCarrinho();
+        });
+      });
+    }
+
+    function atualizarTotal() {
+      let total = 0;
+      document.querySelectorAll('.selecionarProduto').forEach(checkbox => {
+        if (checkbox.checked) {
+          const idx = checkbox.getAttribute('data-index');
+          const preco = formatarPreco(carrinho[idx].preco);
+          total += preco;
+        }
+      });
+
+      if (descontoAtivo) {
+        total = total - descontoValor;
+        if (total < 0) total = 0;
+      }
+
+      totalEl.textContent = 'Total: ' + formatarPrecoReal(total);
+    }
+
+    aplicarCupomBtn.addEventListener('click', () => {
+      const cupom = cupomInput.value.trim();
+      if (cupom === 'PequenoMundo2025') {
+        descontoAtivo = true;
+        descontoValor = 10; 
+        mensagemCupom.style.color = 'green';
+        mensagemCupom.textContent = 'Cupom aplicado! R$10,00 de desconto.';
+      } else {
+        descontoAtivo = false;
+        descontoValor = 0;
+        mensagemCupom.style.color = 'red';
+        mensagemCupom.textContent = 'Cupom inválido.';
+      }
+      atualizarTotal();
+    });
+
+    pagarBtn.addEventListener('click', () => {
+      const produtosSelecionados = [];
+      let totalPagamento = 0;
+
+      document.querySelectorAll('.selecionarProduto').forEach(checkbox => {
+        if (checkbox.checked) {
+          const idx = checkbox.getAttribute('data-index');
+          produtosSelecionados.push(carrinho[idx]);
+          totalPagamento += formatarPreco(carrinho[idx].preco);
+        }
+      });
+
+      if (produtosSelecionados.length === 0) {
+        alert('Selecione pelo menos um produto para pagar.');
+        return;
+      }
+
+      if (descontoAtivo) {
+        totalPagamento -= descontoValor;
+        if (totalPagamento < 0) totalPagamento = 0;
+      }
+
+      let resumo = 'Resumo do pagamento:\n\n';
+      produtosSelecionados.forEach(p => {
+        resumo += `- ${p.nome} (${p.tamanho || 'Tamanho não selecionado'}, cor: ${p.cor || 'não selecionada'}) - ${p.preco}\n`;
+      });
+      resumo += `\nTotal a pagar: ${formatarPrecoReal(totalPagamento)}`;
+
+      alert(resumo);
+      // Aqui você pode implementar o redirecionamento para o pagamento real, se quiser
+    });
+
+   
+    renderizarCarrinho();
+  </script>
+</body>
+</html>
