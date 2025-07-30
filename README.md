@@ -1,6 +1,7 @@
 <h1 align="center">Loja Pequeno Mundo</h1>
 <p align="center"><i>Repositório para projeto realizado no curso de TI-SENAI.</i></p>
-![Logo da Loja] <img width="300" height="300" alt="Fundo Branco" src="https://github.com/user-attachments/assets/688323e9-d611-40ee-b091-e899212b4a90" />
+<p <img width="300" height="300" alt="Fundo Branco" src="https://github.com/user-attachments/assets/688323e9-d611-40ee-b091-e899212b4a90" /><Logo da Loja</p>
+
 
 ## Nome:
 ### Pequeno Mundo
