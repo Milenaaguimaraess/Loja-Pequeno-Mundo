@@ -2,7 +2,7 @@
 <p align="center"><i>Repositório para projeto realizado no curso de TI-SENAI.</i></p>
 
 <p align="center">
-<img loading="lazy" src="http://img.shields.io/static/v1?label=STATUS&message=20%CONCLUÍDO&color=GREEN&style=for-the-badge"/>
+<img loading="lazy" src="http://img.shields.io/static/v1?label=STATUS&message=%20CONCLUÍDO&color=GREEN&style=for-the-badge"/>
 </p>
 
 ## Nome
