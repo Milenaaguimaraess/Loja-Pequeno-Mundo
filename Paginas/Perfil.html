@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Perfil da Eduarda</title>
+      <link rel="icon" href="img/LOGO.png" type="image/png">
+
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #ffffff;
+      color: #444;
+    }
+
+    .perfil-topo {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      padding: 30px 20px 10px;
+    }
+
+    .perfil-topo img {
+      width: 90px;
+      height: 90px;
+      border-radius: 50%;
+      border: 3px solid #f072a7;
+      object-fit: cover;
+      cursor: pointer;
+    }
+
+    .perfil-topo .info {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .perfil-topo .info h2 {
+      margin: 0;
+      font-size: 20px;
+      color: #d81b60;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .edit-icon {
+      font-size: 16px;
+      color: #888;
+      cursor: pointer;
+    }
+
+    .info-extra {
+      padding: 0 20px 10px;
+      font-size: 14px;
+    }
+
+    .info-extra p {
+      margin: 4px 0;
+    }
+
+    .section {
+      margin-top: 30px;
+      padding: 0 20px;
+    }
+
+    .section h3 {
+      font-size: 15px;
+      color: #e91e63;
+      margin-bottom: 10px;
+      position: relative;
+    }
+
+    .section h3::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: -5px;
+      height: 1px;
+      width: 100%;
+      background-color: #f5b4ca;
+    }
+
+    .icon-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 30px;
+      margin-top: 20px;
+    }
+
+    .icon-btn {
+      text-align: center;
+      width: 80px;
+      text-decoration: none;
+      color: #444;
+      transition: transform 0.2s;
+    }
+
+    .icon-btn:hover {
+      transform: scale(1.05);
+    }
+
+    .icon-circle {
+      width: 55px;
+      height: 55px;
+      background-color: #ffe4ec;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      color: #d81b60;
+      margin: 0 auto 6px;
+    }
+
+    @media screen and (max-width: 500px) {
+      .icon-grid {
+        justify-content: space-between;
+      }
+
+      .perfil-topo {
+        flex-direction: column;
+        text-align: center;
+      }
+
+      .perfil-topo .info {
+        align-items: center;
+      }
+
+      .perfil-topo img {
+        margin-bottom: 10px;
+      }
+    }
+  </style>
+</head>
+<body>
+<div id="header-container"></div>
+
+  <div class="perfil-topo">
+    <img src="" alt="" id="fotoPerfil" onclick="editarFoto()" title="Clique para trocar a foto">
+    <div class="info">
+      <h2 id="nomeUsuario">
+        Eduarda Rodrigues
+        <span class="edit-icon" onclick="editarNome()" title="Editar nome">✏️</span>
+      </h2>
+      <p>Cliente Ouro ✨</p>
+      <p>Último login: 07/07/2025</p>
+    </div>
+  </div>
+
+  <div class="info-extra">
+    <p><strong>Pontos acumulados:</strong> 320</p>
+    <p><strong>Cupom do mês:</strong> <span style="color:#e91e63;">PequenoMundo2025</span></p>
+  </div>
+
+  <!-- Seção: Compras -->
+  <div class="section">
+    <h3>Compras</h3>
+    <div class="icon-grid">
+      <a href="comprar.html" class="icon-btn">
+        <div class="icon-circle">🛒</div>
+        Carrinho
+      </a>
+      <a href="#" class="icon-btn">
+        <div class="icon-circle">🚚</div>
+        Rastreio
+      </a>
+      <a href="#" class="icon-btn">
+        <div class="icon-circle">📦</div>
+        Pedidos
+      </a>
+         <a href="#" class="icon-btn">
+        <div class="icon-circle">📝</div>
+        Avaliação
+      </a>
+    </div>
+  </div>
+
+
+
+  <!-- Seção: Conta -->
+  <div class="section">
+    <h3>Conta</h3>
+    <div class="icon-grid">
+      <a href="#" class="icon-btn">
+        <div class="icon-circle">✏️</div>
+        Editar
+      </a>
+      <a href="#" class="icon-btn">
+        <div class="icon-circle">🔔</div>
+        Notificações
+      </a>
+      <a href="#" class="icon-btn">
+        <div class="icon-circle">⚙️</div>
+        Config
+      </a>
+      <a href="#" class="icon-btn">
+        <div class="icon-circle">🚪</div>
+        Sair
+      </a>
+        <a href="#" class="icon-btn">
+        <div class="icon-circle">💖</div>
+        Favoritos
+      </a>
+    </div>
+  </div>
+  <br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+<div id="footer-container"></div>
+
+  <script>
+    fetch('Header.html')
+    .then(response => response.text())
+    .then(data => {
+      document.getElementById('header-container').innerHTML = data;
+    })
+
+    
+        fetch('footer.html')
+    .then(response => response.text())
+    .then(data => {
+      document.getElementById('footer-container').innerHTML = data;
+    })
+    .catch(error => console.error('Erro ao carregar o footer:', error));
+
+
+    fetch('footer.html')
+    .then(response => response.text())
+    .then(data => {
+      document.getElementById('footer-container').innerHTML = data;
+    })
+
+
+
+    .catch(error => console.error('Erro ao carregar o header:', error));
+    function editarNome() {
+      const nomeAtual = document.getElementById('nomeUsuario');
+      const nomeTexto = nomeAtual.childNodes[0].nodeValue.trim();
+
+      const novoNome = prompt("Digite seu novo nome:", nomeTexto);
+      if (novoNome && novoNome.trim() !== "") {
+        nomeAtual.childNodes[0].nodeValue = novoNome + " ";
+      }
+    }
+
+   
+  </script>
+
+</body>
+</html>

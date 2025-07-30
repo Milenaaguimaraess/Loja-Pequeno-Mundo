@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Cadastro de Produtos</title>
+      <link rel="icon" href="img/LOGO.png" type="image/png">
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+      background: #f9f9f9;
+    }
+    button {
+      padding: 10px 20px;
+      margin-right: 10px;
+      cursor: pointer;
+    }
+    button.active {
+      background-color: #007bff;
+      color: white;
+      border: none;
+    }
+    section {
+      margin-top: 20px;
+      background: white;
+      padding: 20px;
+      border-radius: 5px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+    }
+    th, td {
+      padding: 10px;
+      border-bottom: 1px solid #ddd;
+      text-align: left;
+    }
+    td img {
+      max-width: 60px;
+      max-height: 60px;
+      border-radius: 4px;
+    }
+    .acoes-btn button {
+      margin-right: 5px;
+      padding: 5px 10px;
+    }
+    .acoes-btn button.apagar {
+      background-color: #dc3545;
+      color: white;
+      border: none;
+    }
+    /* Paleta de cores */
+    .paleta-cores {
+      margin: 10px 0;
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .bola-cor {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      border: 2px solid transparent;
+      cursor: pointer;
+      transition: border-color 0.3s;
+    }
+    .bola-cor.selecionada {
+      border-color: #000;
+    }
+    /* Modal */
+    #modalEditar {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.6);
+      justify-content: center;
+      align-items: center;
+      z-index: 10;
+    }
+    #modalEditar .modal-conteudo {
+      background: white;
+      padding: 20px;
+      width: 400px;
+      max-width: 90%;
+      border-radius: 8px;
+      position: relative;
+    }
+    #modalEditar .modal-conteudo h2 {
+      margin-top: 0;
+    }
+    #modalEditar .modal-conteudo button.fechar {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: transparent;
+      border: none;
+      font-size: 20px;
+      cursor: pointer;
+    }
+    input[type="text"], input[type="number"], select, textarea {
+      width: 100%;
+      padding: 6px;
+      margin: 6px 0 12px 0;
+      box-sizing: border-box;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    label {
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+
+  <button id="btnAdd" class="active">Adicionar Produto</button>
+  <button id="btnModificar">Modificar Produto</button>
+
+  <!-- Seção Adicionar -->
+  <section id="addSection" style="display: block;">
+    <h1>Adicionar Produto</h1>
+    <form id="formProduto">
+      <label for="nome">Nome:</label>
+      <input type="text" id="nome" required />
+
+      <label for="descricao">Descrição:</label>
+      <textarea id="descricao" rows="3" required></textarea>
+
+      <label for="preco">Preço:</label>
+      <input type="number" id="preco" step="0.01" required />
+
+      <label for="categoria">Categoria:</label>
+      <select id="categoria" required>
+        <option value="">Selecione</option>
+       <option value="menino">Menino</option>
+<option value="menina">Menina</option>
+<option value="bebe">Bebê</option>
+
+      </select>
+
+      <label>Cores:</label>
+      <div id="paletaCores" class="paleta-cores"></div>
+      <input type="hidden" id="cores" required />
+
+      <label for="tamanhos">Tamanhos (separados por vírgula):</label>
+      <input type="text" id="tamanhos" placeholder="Ex: P, M, G" />
+
+      <label for="imagem">Imagem:</label>
+      <input type="file" id="imagem" accept="image/*" required />
+
+      <button type="submit">Adicionar Produto</button>
+    </form>
+  </section>
+
+  <!-- Seção Modificar -->
+  <section id="modificarSection" style="display: none;">
+    <h1>Modificar Produtos</h1>
+    <table>
+      <thead>
+        <tr>
+          <th>Imagem</th>
+          <th>Nome</th>
+          <th>Categoria</th>
+          <th>Preço</th>
+          <th>Ações</th>
+        </tr>
+      </thead>
+      <tbody id="tbodyProdutos">
+        <!-- Produtos aparecerão aqui -->
+      </tbody>
+    </table>
+  </section>
+
+  <!-- Modal Editar Produto -->
+  <div id="modalEditar">
+    <div class="modal-conteudo">
+      <button class="fechar" onclick="fecharModalEditar()">×</button>
+      <h2>Editar Produto</h2>
+      <form id="formEditarProduto">
+        <label for="editNome">Nome:</label>
+        <input type="text" id="editNome" required />
+
+        <label for="editDescricao">Descrição:</label>
+        <textarea id="editDescricao" rows="3" required></textarea>
+
+        <label for="editPreco">Preço:</label>
+        <input type="number" id="editPreco" step="0.01" required />
+
+       <label for="categoria">Categoria:</label>
+<select id="categoria" required>
+  <option value="">Selecione</option>
+  <option value="menino">Menino</option>
+  <option value="menina">Menina</option>
+  <option value="bebe">Bebê</option>
+</select>
+
+
+        <label>Cores:</label>
+        <div id="paletaCoresEditar" class="paleta-cores"></div>
+        <input type="hidden" id="editCores" required />
+
+        <label for="editTamanhos">Tamanhos (separados por vírgula):</label>
+        <input type="text" id="editTamanhos" placeholder="Ex: P, M, G" />
+
+        <label for="editImagem">Imagem (trocar opcionalmente):</label>
+        <input type="file" id="editImagem" accept="image/*" />
+
+        <button type="submit">Salvar Alterações</button>
+      </form>
+    </div>
+  </div>
+
+<script>
+  const btnAdd = document.getElementById('btnAdd');
+  const btnModificar = document.getElementById('btnModificar');
+  const addSection = document.getElementById('addSection');
+  const modificarSection = document.getElementById('modificarSection');
+
+  btnAdd.onclick = () => {
+    btnAdd.classList.add('active');
+    btnModificar.classList.remove('active');
+    addSection.style.display = 'block';
+    modificarSection.style.display = 'none';
+  };
+
+  btnModificar.onclick = () => {
+    btnModificar.classList.add('active');
+    btnAdd.classList.remove('active');
+    addSection.style.display = 'none';
+    modificarSection.style.display = 'block';
+    carregarTabela();
+  };
+
+  // Produtos salvos no localStorage
+  let produtos = JSON.parse(localStorage.getItem('produtos')) || [];
+
+  const paletaCores = [
+    '#FF0000', // vermelho
+    '#FF7F00', // laranja
+    '#FFFF00', // amarelo
+    '#00FF00', // verde
+    '#0000FF', // azul
+    '#4B0082', // anil
+    '#8B00FF', // violeta
+    '#000000', // preto
+    '#FFFFFF'  // branco
+  ];
+
+  // Paleta cores - adicionar
+  const paletaContainerAdd = document.getElementById('paletaCores');
+  const inputCoresAdd = document.getElementById('cores');
+  let coresSelecionadas = [];
+
+  function atualizarInputCores(){
+    inputCoresAdd.value = coresSelecionadas.join(',');
+  }
+
+  function criarPaletaAdd(){
+    paletaContainerAdd.innerHTML = ''; 
+    coresSelecionadas = [];
+
+    paletaCores.forEach(cor => {
+      const bola = document.createElement('div');
+      bola.style.backgroundColor = cor;
+      bola.className = 'bola-cor';
+      bola.title = cor;
+
+      bola.addEventListener('click', () => {
+        if(coresSelecionadas.includes(cor)){
+          coresSelecionadas = coresSelecionadas.filter(item => item !== cor);
+          bola.classList.remove('selecionada');
+        } else {
+          coresSelecionadas.push(cor);
+          bola.classList.add('selecionada');
+        }
+        atualizarInputCores();
+      });
+
+      paletaContainerAdd.appendChild(bola);
+    });
+
+    atualizarInputCores();
+  }
+
+  criarPaletaAdd();
+
+  // Formulário adicionar produto
+  const formProduto = document.getElementById('formProduto');
+  const inputImagem = document.getElementById('imagem');
+
+  formProduto.addEventListener('submit', e => {
+    e.preventDefault();
+
+    const nome = document.getElementById('nome').value.trim();
+    const descricao = document.getElementById('descricao').value.trim();
+    const preco = document.getElementById('preco').value.trim();
+    const categoria = document.getElementById('categoria').value;
+    const cores = document.getElementById('cores').value.split(',').map(c => c.trim()).filter(c => c);
+    const tamanhos = document.getElementById('tamanhos').value.split(',').map(t => t.trim()).filter(t => t);
+
+    if(!inputImagem.files[0]){
+      alert('Por favor, selecione uma imagem!');
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = function(event){
+      const imagemBase64 = event.target.result;
+
+      const novoProduto = {
+        id: Date.now(),
+        nome,
+        descricao,
+        preco,
+        categoria,
+        cores,
+        tamanhos,
+        imagem: imagemBase64
+      };
+
+      produtos.push(novoProduto);
+      localStorage.setItem('produtos', JSON.stringify(produtos));
+
+      aalert('Produto adicionado com sucesso!');
+
+// Redireciona para a página da categoria
+if (categoria === 'menino') {
+  window.location.href = 'menino.html';
+} else if (categoria === 'menina') {
+  window.location.href = 'menina.html';
+} else if (categoria === 'bebe') {
+  window.location.href = 'bebe.html';
+} else {
+  formProduto.reset();
+  coresSelecionadas = [];
+  atualizarInputCores();
+}
+
+    };
+    reader.readAsDataURL(inputImagem.files[0]);
+  });
+
+  // Função para carregar tabela
+  const tbodyProdutos = document.getElementById('tbodyProdutos');
+  function carregarTabela(){
+    tbodyProdutos.innerHTML = '';
+    produtos.forEach(prod => {
+      const tr = document.createElement('tr');
+
+      tr.innerHTML = `
+        <td><img src="${prod.imagem}" alt="${prod.nome}" /></td>
+        <td>${prod.nome}</td>
+        <td>${prod.categoria}</td>
+        <td>R$ ${Number(prod.preco).toFixed(2).replace('.', ',')}</td>
+        <td class="acoes-btn">
+          <button onclick="editarProduto(${prod.id})">Editar</button>
+          <button class="apagar" onclick="apagarProduto(${prod.id})">Apagar</button>
+        </td>
+      `;
+
+      tbodyProdutos.appendChild(tr);
+    });
+  }
+
+  // Modal editar produto
+  const modalEditar = document.getElementById('modalEditar');
+  const formEditarProduto = document.getElementById('formEditarProduto');
+  const paletaContainerEditar = document.getElementById('paletaCoresEditar');
+  const inputCoresEditar = document.getElementById('editCores');
+  let coresSelecionadasEditar = [];
+  let idEditando = null;
+  let imagemEditBase64 = null;
+
+  function atualizarInputCoresEditar(){
+    inputCoresEditar.value = coresSelecionadasEditar.join(',');
+  }
+
+  function criarPaletaEditar(coresProduto = []){
+    paletaContainerEditar.innerHTML = '';
+    coresSelecionadasEditar = [...coresProduto];
+
+    paletaCores.forEach(cor => {
+      const bola = document.createElement('div');
+      bola.style.backgroundColor = cor;
+      bola.className = 'bola-cor';
+      bola.title = cor;
+
+      if(coresSelecionadasEditar.includes(cor)){
+        bola.classList.add('selecionada');
+      }
+
+      bola.addEventListener('click', () => {
+        if(coresSelecionadasEditar.includes(cor)){
+          coresSelecionadasEditar = coresSelecionadasEditar.filter(item => item !== cor);
+          bola.classList.remove('selecionada');
+        } else {
+          coresSelecionadasEditar.push(cor);
+          bola.classList.add('selecionada');
+        }
+        atualizarInputCoresEditar();
+      });
+
+      paletaContainerEditar.appendChild(bola);
+    });
+
+    atualizarInputCoresEditar();
+  }
+
+  function editarProduto(id){
+    idEditando = id;
+    const produto = produtos.find(p => p.id === id);
+    if(!produto) return alert('Produto não encontrado');
+
+    document.getElementById('editNome').value = produto.nome;
+    document.getElementById('editDescricao').value = produto.descricao;
+    document.getElementById('editPreco').value = produto.preco;
+    document.getElementById('editCategoria').value = produto.categoria;
+    document.getElementById('editTamanhos').value = produto.tamanhos.join(',');
+
+    criarPaletaEditar(produto.cores);
+
+    imagemEditBase64 = produto.imagem;
+
+    modalEditar.style.display = 'flex';
+  }
+
+  function fecharModalEditar(){
+    modalEditar.style.display = 'none';
+    formEditarProduto.reset();
+    imagemEditBase64 = null;
+    idEditando = null;
+    paletaContainerEditar.innerHTML = '';
+    coresSelecionadasEditar = [];
+    atualizarInputCoresEditar();
+  }
+
+  document.getElementById('editImagem').addEventListener('change', function(){
+    if(this.files && this.files[0]){
+      const reader = new FileReader();
+      reader.onload = function(e){
+        imagemEditBase64 = e.target.result;
+      };
+      reader.readAsDataURL(this.files[0]);
+    }
+  });
+
+  formEditarProduto.addEventListener('submit', e => {
+    e.preventDefault();
+    if(idEditando === null) return;
+
+    const nome = document.getElementById('editNome').value.trim();
+    const descricao = document.getElementById('editDescricao').value.trim();
+    const preco = document.getElementById('editPreco').value.trim();
+    const categoria = document.getElementById('editCategoria').value;
+    const cores = inputCoresEditar.value.split(',').map(c => c.trim()).filter(c => c);
+    const tamanhos = document.getElementById('editTamanhos').value.split(',').map(t => t.trim()).filter(t => t);
+
+    const index = produtos.findIndex(p => p.id === idEditando);
+    if(index === -1) return alert('Produto não encontrado para editar.');
+
+    produtos[index] = {
+      ...produtos[index],
+      nome,
+      descricao,
+      preco,
+      categoria,
+      cores,
+      tamanhos,
+      imagem: imagemEditBase64 || produtos[index].imagem
+    };
+
+    localStorage.setItem('produtos', JSON.stringify(produtos));
+    carregarTabela();
+    fecharModalEditar();
+    alert('Produto atualizado!');
+  });
+
+  function apagarProduto(id){
+    if(!confirm('Tem certeza que deseja apagar esse produto?')) return;
+    produtos = produtos.filter(p => p.id !== id);
+    localStorage.setItem('produtos', JSON.stringify(produtos));
+    carregarTabela();
+  }
+
+  // Carrega tabela se na seção modificar ao iniciar
+  if(modificarSection.style.display === 'block'){
+    carregarTabela();
+  }
+
+</script>
+
+</body>
+</html>

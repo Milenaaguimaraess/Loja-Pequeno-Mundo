@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Destaques</title>
+    <link rel="stylesheet" href="destaque.css">
+        <link rel="icon" href="img/LOGO.png" type="image/png">
+
+    <style>
+      *{
+  padding: 0%;
+  margin: 0%;
+}
+  body{
+  background-image: url('img/fundo2.png');  
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;}
+
+.verao {
+  padding: 40px 20px;
+  text-align: center;
+}
+
+.verao-titulo {
+  margin-bottom: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+    gap: 20px;
+
+}
+
+.bolinhas {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.bolinhas span {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.bolinhas span:hover{
+    width: 32px;
+  height: 32px;
+  transition: 0.5s;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+
+.verao-titulo h2 {
+  font-family: 'DM Serif Display', serif;
+  font-size: 28px;
+  color: #111;
+}
+
+.verao-galeria {
+  display: flex;
+  justify-content: center;
+  gap: 32px;
+  flex-wrap: wrap;
+}
+
+.verao-card {
+  position: relative;
+  width: 600px;
+  height: 900px;
+  overflow: hidden;
+  text-decoration: none;
+  display: block;
+}
+
+.verao-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  border-radius: 20PX;
+}
+
+.verao-label {
+  position: absolute;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: white;
+  font-family: 'DM Serif Display', serif;
+  font-size: 26px;
+  padding: 12px 30px;
+  border-radius: 30px;
+}
+.verao-label:hover {
+color:#EDB5B5; 
+}
+
+
+
+.galeria-roupas {
+  padding: 60px 20px;
+  text-align: center;
+}
+
+.galeria-roupas h1 {
+  font-size: 32px;
+  margin-bottom: 40px;
+  font-family: 'DM Serif Display', serif;
+  color: #8AC0BF;
+}
+
+.galeria-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 30px;
+}
+
+.item {
+  position: relative;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.item img {
+  width: 400px;
+  height: 600PX;
+  display: block;
+  border-radius: 30px;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+
+}
+
+.item:hover img {
+  transform: scale(1.03);
+}
+
+.item button {
+  position: absolute;
+  bottom: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #8AC0BF;
+  color: white;
+  border: none;
+  border-radius: 25px;
+  padding: 8px 20px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.item button:hover {
+  background-color: #5cc13b;
+}
+
+@media (max-width: 768px) {
+  .item {
+    width: 100%;
+    max-width: 320px;
+  }
+}
+
+
+    </style>
+</head>
+<body>
+      <div id="Header-container"></div>
+      <br>
+    <section class="verao">
+  <div class="verao-titulo">
+    <div class="bolinhas">
+      <span style="background-color: #fbd048;"></span>
+      <span style="background-color: #f590cf;"></span>
+      <span style="background-color: #7d80da;"></span>
+      <span style="background-color: #6dc0f6;"></span>
+    </div>
+    <h2>NOVA COLEÇÃO: VERÃO PRAIANO</h2>
+  </div>
+
+  <div class="verao-galeria">
+    <a href="..." class="verao-card">
+      <img src="img/DESTAQUES/MENINAS VERAO.jpg" alt="Meninas">
+      <div class="verao-label">MENINAS</div>
+    </a>
+    <a href="..." class="verao-card">
+      <img src="img/DESTAQUES/MENINOS VERAO.jpg" alt="Meninos">
+      <div class="verao-label">MENINOS</div>
+    </a>
+  </div>
+</section>
+
+<section class="galeria-roupas">
+  <h1>Coleção 2025 - ESTAÇÕES DO ANO</h1>
+
+  <div class="galeria-container">
+    <div class="item">
+      <img src="img/DESTAQUES/INVERNO.png" alt="Imagem 1">
+      <button>INVERNO</button>
+    </div>
+    <div class="item">
+      <img src="img/DESTAQUES/praia.jpg" alt="Imagem 2">
+      <button>VERÃO</button>
+    </div>
+    <div class="item">
+      <img src="img/DESTAQUES/outono.jpg" alt="Imagem 3">
+      <button>OUTONO</button>
+    </div>
+    <div class="item">
+      <img src="img/DESTAQUES/primavera.jpg" alt="Imagem 4">
+      <button>PRIMAVERA</button>
+    </div>
+  </div>
+</section>
+
+<section class="galeria-roupas">
+  <h1>Coleção 2024 - SONHOS DE INFÂNCIA</h1>
+
+  <div class="galeria-container">
+    <div class="item">
+      <img src="img/DESTAQUES/HEROI.png" alt="Imagem 1">
+      <button>HEROIS</button>
+    </div>
+    <div class="item">
+      <img src="img/DESTAQUES/PRINCESA.png" alt="Imagem 2">
+      <button>PRINCESAS</button>
+    </div>
+    <div class="item">
+      <img src="img/DESTAQUES/BRUXA.png" alt="Imagem 3">
+      <button>BRUXAS</button>
+    </div>
+    <div class="item">
+      <img src="img/DESTAQUES/ASTRONAUTA.png" alt="Imagem 4">
+      <button>LUNATICOS</button>
+    </div>
+  </div>
+</section>
+<div id="footer-container"></div>
+
+
+<script>
+  fetch('Header.html')
+    .then(res => res.text())
+    .then(data => {
+      document.getElementById('Header-container').innerHTML = data;
+    });
+
+
+        fetch('footer.html')
+    .then(response => response.text())
+    .then(data => {
+      document.getElementById('footer-container').innerHTML = data;
+    })
+    .catch(error => console.error('Erro ao carregar o footer:', error));
+
+</script>
+</body>
+</html>

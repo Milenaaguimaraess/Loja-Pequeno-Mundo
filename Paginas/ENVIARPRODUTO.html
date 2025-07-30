@@ -1,0 +1,156 @@
+<!-- admin.html -->
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Painel de Pedidos - Admin</title>
+      <link rel="icon" href="img/LOGO.png" type="image/png">
+
+  <style>
+    * {
+      box-sizing: border-box;
+      padding: 0;
+      margin: 0;
+    }
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f4f4;
+    }
+    header {
+      background: #333;
+      color: #fff;
+      padding: 20px;
+      text-align: center;
+    }
+    .board {
+      display: flex;
+      gap: 20px;
+      padding: 30px;
+      justify-content: center;
+    }
+    .coluna {
+      background: white;
+      border-radius: 10px;
+      padding: 20px;
+      width: 23%;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+    .coluna h2 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    ul {
+      list-style: none;
+      padding: 0;
+    }
+    li {
+      background: #fce4ec;
+      margin-bottom: 10px;
+      padding: 15px;
+      border-radius: 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    button {
+      background: #f06292;
+      color: white;
+      border: none;
+      padding: 6px 10px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #ec407a;
+    }
+    #novoPedido {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin: 20px;
+    }
+    input {
+      padding: 10px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Administração de Pedidos</h1>
+  </header>
+
+  <section id="novoPedido">
+    <input type="text" id="nomeCliente" placeholder="Nome do Cliente ou Produto" />
+    <button onclick="adicionarPedido()">Adicionar Pedido</button>
+  </section>
+
+  <section class="board">
+    <div class="coluna">
+      <h2>Processando</h2>
+      <ul id="status-processando"></ul>
+    </div>
+    <div class="coluna">
+      <h2>Pago</h2>
+      <ul id="status-pago"></ul>
+    </div>
+    <div class="coluna">
+      <h2>Enviado</h2>
+      <ul id="status-enviado"></ul>
+    </div>
+    <div class="coluna">
+      <h2>Entregue</h2>
+      <ul id="status-entregue"></ul>
+    </div>
+  </section>
+
+  <script>
+    let pedidos = JSON.parse(localStorage.getItem('pedidos')) || [];
+
+    function salvarPedidos() {
+      localStorage.setItem('pedidos', JSON.stringify(pedidos));
+    }
+
+    function atualizarQuadros() {
+      ['processando', 'pago', 'enviado', 'entregue'].forEach(status => {
+        document.getElementById('status-' + status).innerHTML = '';
+      });
+
+      pedidos.forEach(p => {
+        const li = document.createElement('li');
+        li.innerHTML = `
+          ${p.nome}
+          ${p.status !== 'entregue' ? `<button onclick="mover('${p.id}')">Próximo</button>` : ''}
+        `;
+        document.getElementById('status-' + p.status).appendChild(li);
+      });
+    }
+
+    function adicionarPedido() {
+      const nome = document.getElementById('nomeCliente').value.trim();
+      if (!nome) return alert('Digite o nome do pedido ou cliente');
+      const novo = { id: Date.now(), nome, status: 'processando' };
+      pedidos.push(novo);
+      salvarPedidos();
+      atualizarQuadros();
+      document.getElementById('nomeCliente').value = '';
+    }
+
+    function mover(id) {
+      const index = pedidos.findIndex(p => p.id == id);
+      if (index === -1) return;
+      const ordem = ['processando', 'pago', 'enviado', 'entregue'];
+      const atual = ordem.indexOf(pedidos[index].status);
+      if (atual < ordem.length - 1) {
+        pedidos[index].status = ordem[atual + 1];
+        salvarPedidos();
+        atualizarQuadros();
+      }
+    }
+
+    atualizarQuadros();
+  </script>
+</body>
+</html>

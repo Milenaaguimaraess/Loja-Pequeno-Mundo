@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Admin - Gerenciar Produtos</title>
+    <link rel="icon" href="img/LOGO.png" type="image/png">
+
+<style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+      background: #f9f9f9;
+    }
+      button {
+    padding: 10px 20px;
+    margin-right: 10px;
+    cursor: pointer;
+  }
+  button.active {
+    background-color: #007bff;
+    color: white;
+    border: none;
+  }
+  section {
+    margin-top: 20px;
+    background: white;
+    padding: 20px;
+    border-radius: 5px;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+  }
+  th, td {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+    text-align: left;
+  }
+  td img {
+    max-width: 60px;
+    max-height: 60px;
+    border-radius: 4px;
+  }
+  .acoes-btn button {
+    margin-right: 5px;
+    padding: 5px 10px;
+  }
+  .acoes-btn button.apagar {
+    background-color: #dc3545;
+    color: white;
+    border: none;
+  }
+  .paleta-cores {
+    margin: 10px 0;
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .bola-cor {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    border: 2px solid transparent;
+    cursor: pointer;
+    transition: border-color 0.3s;
+  }
+  .bola-cor.selecionada {
+    border-color: #000;
+  }
+  .bola-cor[title="#FF0000"] { background-color: #FF0000; }
+  .bola-cor[title="#FF7F00"] { background-color: #FF7F00; }
+  .bola-cor[title="#FFFF00"] { background-color: #FFFF00; }
+  .bola-cor[title="#00FF00"] { background-color: #00FF00; }
+  .bola-cor[title="#0000FF"] { background-color: #0000FF; }
+  .bola-cor[title="#4B0082"] { background-color: #4B0082; }
+  .bola-cor[title="#8B00FF"] { background-color: #8B00FF; }
+  .bola-cor[title="#000000"] { background-color: #000000; }
+  .bola-cor[title="#FFFFFF"] { background-color: #FFFFFF; border: 1px solid #ccc; }
+  #modalEditar {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.6);
+    justify-content: center;
+    align-items: center;
+    z-index: 10;
+  }
+  #modalEditar .modal {
+    background: white;
+    padding: 20px;
+    width: 100%;
+    max-width: 500px;
+    border-radius: 8px;
+    position: relative;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+  }
+  #modalEditar .modal button.fechar {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: transparent;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: #333;
+  }
+  input[type="text"], input[type="number"], select, textarea {
+    width: 100%;
+    padding: 10px;
+    margin: 8px 0 16px 0;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+  }
+  label {
+    font-weight: bold;
+    display: block;
+    margin-top: 10px;
+  }
+  .save-btn {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 4px;
+  }
+  .save-btn:hover {
+    background-color: #218838;
+  }
+    /* Paleta de cores */
+    .paleta-cores {
+      margin: 10px 0;
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .bola-cor {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      border: 2px solid transparent;
+      cursor: pointer;
+      transition: border-color 0.3s;
+    }
+    .bola-cor.selecionada {
+      border-color: #000;
+    }
+    /* Modal */
+    #modalEditar {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.6);
+      justify-content: center;
+      align-items: center;
+      z-index: 10;
+    }
+    #modalEditar .modal-conteudo {
+      background: white;
+      padding: 20px;
+      width: 400px;
+      max-width: 90%;
+      border-radius: 8px;
+      position: relative;
+    }
+    #modalEditar .modal-conteudo h2 {
+      margin-top: 0;
+    }
+    #modalEditar .modal-conteudo button.fechar {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: transparent;
+      border: none;
+      font-size: 20px;
+      cursor: pointer;
+    }
+input[type="file"] {
+  display: block;
+  width: 100%;
+  padding: 12px;
+  background-color: #fff0f6;
+  border: 2px dashed #ff69b4;
+  border-radius: 10px;
+  font-size: 14px;
+  color: #555;
+  cursor: pointer;
+  transition: border-color 0.3s, background-color 0.3s;
+}
+
+input[type="file"]:hover {
+  background-color: #ffe0ec;
+  border-color: #ff1493;
+}
+
+input[type="file"]:focus {
+  outline: none;
+  border-color: #ff1493;
+  box-shadow: 0 0 0 3px rgba(255, 105, 180, 0.3);
+}
+.input-imagem {
+  display: none;
+}
+
+.botao-upload {
+  display: inline-block;
+  background-color: #ff69b4;
+  color: white;
+  padding: 10px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  margin-top: 6px;
+}
+
+.botao-upload:hover {
+  background-color: #ff1493;
+}
+
+    label {
+      font-weight: bold;
+    }
+</style>
+</head>
+<body>
+
+<header>
+  <button id="btnAdd" class="nav-btn active">Adicionar Produto</button>
+  <button id="btnModificar" class="nav-btn">Modificar Produtos</button>
+  <button id="btnPedido" class="nav-btn">Rastreamento</button>
+</header>
+
+<section id="addSection">
+  <form id="formProduto">
+    <label for="nome">Nome</label>
+    <input type="text" id="nome" required />
+
+    <label for="descricao">Descrição</label>
+    <textarea id="descricao" rows="3" required></textarea>
+
+    <label for="preco">Preço</label>
+    <input type="text" id="preco" required />
+
+    <label for="categoria">Categoria</label>
+    <select id="categoria" required>
+      <option value="">Selecione</option>
+      <option value="menina">Menina</option>
+      <option value="menino">Menino</option>
+      <option value="bebe">Bebê</option>
+    </select>
+
+<label>Cores:</label>
+<div id="paletaCores" class="paleta-cores"></div>
+<input type="hidden" id="cores" required />
+
+
+
+    <label for="tamanhos">Tamanhos (separe por vírgula)</label>
+    <input type="text" id="tamanhos" placeholder="ex: P,M,G,GG" />
+
+    <label for="imagem">Imagem</label>
+    <input type="file" id="imagem" accept="image/*" required />
+
+    <button type="submit" class="submit-btn">Adicionar Produto</button>
+  </form>
+</section>
+
+<section id="modificarSection" style="display:none;">
+  <table id="tabelaProdutos">
+    <thead>
+      <tr>
+        <th>Imagem</th>
+        <th>Nome</th>
+        <th>Categoria</th>
+        <th>Preço</th>
+        <th>Ações</th>
+      </tr>
+    </thead>
+    <tbody id="tbodyProdutos">
+    </tbody>
+  </table>
+</section>
+
+<div class="modal-bg" id="modalEditar">
+  <div class="modal">
+    <button class="fechar" onclick="fecharModalEditar()">✖</button>
+    <form id="formEditarProduto">
+      <label for="editNome">Nome</label>
+      <input type="text" id="editNome" required />
+
+      <label for="editDescricao">Descrição</label>
+      <textarea id="editDescricao" rows="3" required></textarea>
+
+      <label for="editPreco">Preço</label>
+      <input type="text" id="editPreco" required />
+
+      <label for="editCategoria">Categoria</label>
+      <select id="editCategoria" required>
+        <option value="menina">Menina</option>
+        <option value="menino">Menino</option>
+        <option value="bebe">Bebê</option>
+      </select>
+
+
+<label>Cores:</label>
+<div class="paleta-cores" id="paletaCoresEditar">
+  <!-- Rosa -->
+  <div class="bola-cor" style="background-color: #FFC0CB;" data-color="#FFC0CB" title="Rosa Claro"></div>
+  <div class="bola-cor" style="background-color: #FF69B4;" data-color="#FF69B4" title="Rosa Médio"></div>
+  <div class="bola-cor" style="background-color: #C71585;" data-color="#C71585" title="Rosa Escuro"></div>
+
+  <!-- Roxo / Lilás -->
+  <div class="bola-cor" style="background-color: #E6E6FA;" data-color="#E6E6FA" title="Lilás Claro"></div>
+  <div class="bola-cor" style="background-color: #9370DB;" data-color="#9370DB" title="Roxo Médio"></div>
+  <div class="bola-cor" style="background-color: #663399;" data-color="#663399" title="Roxo Escuro"></div>
+
+  <!-- Azul -->
+  <div class="bola-cor" style="background-color: #ADD8E6;" data-color="#ADD8E6" title="Azul Claro"></div>
+  <div class="bola-cor" style="background-color: #4682B4;" data-color="#4682B4" title="Azul Médio"></div>
+  <div class="bola-cor" style="background-color: #000080;" data-color="#000080" title="Azul Escuro"></div>
+
+  <!-- Verde -->
+  <div class="bola-cor" style="background-color: #90EE90;" data-color="#90EE90" title="Verde Claro"></div>
+  <div class="bola-cor" style="background-color: #00FF7F;" data-color="#00FF7F" title="Verde Médio"></div>
+  <div class="bola-cor" style="background-color: #006400;" data-color="#006400" title="Verde Escuro"></div>
+
+  <!-- Amarelo / Laranja -->
+  <div class="bola-cor" style="background-color: #FFFFE0;" data-color="#FFFFE0" title="Amarelo Claro"></div>
+  <div class="bola-cor" style="background-color: #FFD700;" data-color="#FFD700" title="Amarelo Médio"></div>
+  <div class="bola-cor" style="background-color: #FF8C00;" data-color="#FF8C00" title="Laranja Escuro"></div>
+
+  <!-- Marrom -->
+  <div class="bola-cor" style="background-color: #D2B48C;" data-color="#D2B48C" title="Marrom Claro"></div>
+  <div class="bola-cor" style="background-color: #A0522D;" data-color="#A0522D" title="Marrom Médio"></div>
+  <div class="bola-cor" style="background-color: #654321;" data-color="#654321" title="Marrom Escuro"></div>
+
+  <!-- Neutros -->
+  <div class="bola-cor" style="background-color: #FFFFFF; border: 1px solid #ccc;" data-color="#FFFFFF" title="Branco"></div>
+  <div class="bola-cor" style="background-color: #A9A9A9;" data-color="#A9A9A9" title="Cinza Médio"></div>
+  <div class="bola-cor" style="background-color: #000000;" data-color="#000000" title="Preto"></div>
+</div>
+
+<input type="hidden" id="editCores" />
+
+      <label for="editTamanhos">Tamanhos (separe por vírgula)</label>
+      <input type="text" id="editTamanhos" />
+
+      <label for="editImagem">Imagem (troque para atualizar)</label>
+      <input type="file" id="editImagem" accept="image/*" />
+
+      <button type="submit" class="save-btn">Salvar Alterações</button>
+    </form>
+  </div>
+</div>
+
+
+
+<script>
+
+
+
+  const btnAdd = document.getElementById('btnAdd');
+  const btnModificar = document.getElementById('btnModificar');
+  const addSection = document.getElementById('addSection');
+  const modificarSection = document.getElementById('modificarSection');
+
+  btnAdd.onclick = () => {
+    btnAdd.classList.add('active');
+    btnModificar.classList.remove('active');
+    addSection.style.display = 'block';
+    modificarSection.style.display = 'none';
+  };
+
+  btnModificar.onclick = () => {
+    btnModificar.classList.add('active');
+    btnAdd.classList.remove('active');
+    addSection.style.display = 'none';
+    modificarSection.style.display = 'block';
+    carregarTabela();
+  };
+
+  let produtos = JSON.parse(localStorage.getItem('produtos')) || [];
+
+  const formProduto = document.getElementById('formProduto');
+  const inputImagem = document.getElementById('imagem');
+
+  formProduto.addEventListener('submit', e => {
+    e.preventDefault();
+
+    const nome = document.getElementById('nome').value.trim();
+    const descricao = document.getElementById('descricao').value.trim();
+    const preco = document.getElementById('preco').value.trim();
+    const categoria = document.getElementById('categoria').value;
+    const cores = document.getElementById('cores').value.split(',').map(c => c.trim()).filter(c => c);
+    const tamanhos = document.getElementById('tamanhos').value.split(',').map(t => t.trim()).filter(t => t);
+
+    if(!inputImagem.files[0]){
+      alert('Por favor, selecione uma imagem!');
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = function(event){
+      const imagemBase64 = event.target.result;
+
+      const novoProduto = {
+        id: Date.now(),
+        nome,
+        descricao,
+        preco,
+        categoria,
+        cores,
+        tamanhos,
+        imagem: imagemBase64
+      };
+
+      produtos.push(novoProduto);
+      localStorage.setItem('produtos', JSON.stringify(produtos));
+
+      alert('Produto adicionado com sucesso!');
+
+      formProduto.reset();
+    };
+    reader.readAsDataURL(inputImagem.files[0]);
+  });
+
+  // FUNÇÃO PARA CARREGAR A TABELA DE PRODUTOS
+  const tbodyProdutos = document.getElementById('tbodyProdutos');
+  function carregarTabela(){
+    tbodyProdutos.innerHTML = '';
+    produtos.forEach(prod => {
+      const tr = document.createElement('tr');
+
+      tr.innerHTML = `
+        <td><img src="${prod.imagem}" alt="${prod.nome}" /></td>
+        <td>${prod.nome}</td>
+        <td>${prod.categoria}</td>
+        <td>${prod.preco}</td>
+        <td class="acoes-btn">
+          <button onclick="editarProduto(${prod.id})">Editar</button>
+          <button class="apagar" onclick="apagarProduto(${prod.id})">Apagar</button>
+        </td>
+      `;
+
+      tbodyProdutos.appendChild(tr);
+    });
+  }
+
+  // MODAL EDITAR PRODUTO
+  const modalEditar = document.getElementById('modalEditar');
+  const formEditarProduto = document.getElementById('formEditarProduto');
+  let idEditando = null;
+  let imagemEditBase64 = null;
+
+  function editarProduto(id){
+    idEditando = id;
+    const produto = produtos.find(p => p.id === id);
+    if(!produto) return alert('Produto não encontrado');
+
+    document.getElementById('editNome').value = produto.nome;
+    document.getElementById('editDescricao').value = produto.descricao;
+    document.getElementById('editPreco').value = produto.preco;
+    document.getElementById('editCategoria').value = produto.categoria;
+    document.getElementById('editCores').value = produto.cores.join(',');
+    document.getElementById('editTamanhos').value = produto.tamanhos.join(',');
+    imagemEditBase64 = produto.imagem;
+
+    modalEditar.style.display = 'flex';
+  }
+
+  function fecharModalEditar(){
+    modalEditar.style.display = 'none';
+    formEditarProduto.reset();
+    imagemEditBase64 = null;
+    idEditando = null;
+  }
+
+  // Atualiza imagem se trocar arquivo no editar
+  document.getElementById('editImagem').addEventListener('change', function(){
+    if(this.files && this.files[0]){
+      const reader = new FileReader();
+      reader.onload = function(e){
+        imagemEditBase64 = e.target.result;
+      };
+      reader.readAsDataURL(this.files[0]);
+    }
+  });
+
+  formEditarProduto.addEventListener('submit', e => {
+    e.preventDefault();
+    if(idEditando === null) return;
+
+    const nome = document.getElementById('editNome').value.trim();
+    const descricao = document.getElementById('editDescricao').value.trim();
+    const preco = document.getElementById('editPreco').value.trim();
+    const categoria = document.getElementById('editCategoria').value;
+    const cores = document.getElementById('editCores').value.split(',').map(c => c.trim()).filter(c => c);
+    const tamanhos = document.getElementById('editTamanhos').value.split(',').map(t => t.trim()).filter(t => t);
+
+    // Atualiza o produto no array
+    const index = produtos.findIndex(p => p.id === idEditando);
+    if(index === -1) return alert('Produto não encontrado para editar.');
+
+    produtos[index] = {
+      ...produtos[index],
+      nome,
+      descricao,
+      preco,
+      categoria,
+      cores,
+      tamanhos,
+      imagem: imagemEditBase64 || produtos[index].imagem
+    };
+
+    localStorage.setItem('produtos', JSON.stringify(produtos));
+    carregarTabela();
+    fecharModalEditar();
+    alert('Produto atualizado!');
+  });
+
+  // Apagar produto
+  function apagarProduto(id){
+    if(!confirm('Tem certeza que deseja apagar esse produto?')) return;
+    produtos = produtos.filter(p => p.id !== id);
+    localStorage.setItem('produtos', JSON.stringify(produtos));
+    carregarTabela();
+  }
+
+  // Inicializar com a tabela carregada (se já estiver na seção modificar)
+  if(modificarSection.style.display === 'block'){
+    carregarTabela();
+  }
+
+  // Cores disponíveis
+const paletaCores = [
+  //  Rosa
+  '#FFC0CB', // Rosa Claro
+  '#FF69B4', // Rosa Médio
+  '#C71585', // Rosa Escuro
+
+  //  Roxo / Lilás
+  '#E6E6FA', // Lilás Claro
+  '#9370DB', // Roxo Médio
+  '#663399', // Roxo Escuro
+
+  //  Azul
+  '#ADD8E6', // Azul Claro
+  '#4682B4', // Azul Médio
+  '#000080', // Azul Escuro
+
+  //  Verde
+  '#90EE90', // Verde Claro
+  '#00FF7F', // Verde Médio
+  '#006400', // Verde Escuro
+
+  //  Amarelo / Laranja
+  '#FFFFE0', // Amarelo Claro
+  '#FFD700', // Amarelo Médio
+  '#FF8C00', // Laranja Escuro
+
+  // Marrom
+  '#D2B48C', // Marrom Claro
+  '#A0522D', // Marrom Médio
+  '#654321', // Marrom Escuro
+
+  //  Neutros
+  '#FFFFFF', // Branco
+  '#A9A9A9', // Cinza Médio
+  '#000000'  // Preto
+
+];
+
+// Adicionar Produto - Paleta
+const paletaContainerAdd = document.getElementById('paletaCores');
+const inputCoresAdd = document.getElementById('cores');
+let coresSelecionadas = [];
+
+function atualizarInputCores() {
+  inputCoresAdd.value = coresSelecionadas.join(',');
+}
+
+function criarPaletaAdd() {
+  paletaContainerAdd.innerHTML = '';
+  coresSelecionadas = [];
+
+  paletaCores.forEach(cor => {
+    const bola = document.createElement('div');
+    bola.style.backgroundColor = cor;
+    bola.className = 'bola-cor';
+    bola.title = cor;
+
+    bola.addEventListener('click', () => {
+      if (coresSelecionadas.includes(cor)) {
+        coresSelecionadas = coresSelecionadas.filter(c => c !== cor);
+        bola.classList.remove('selecionada');
+      } else {
+        coresSelecionadas.push(cor);
+        bola.classList.add('selecionada');
+      }
+      atualizarInputCores();
+    });
+
+    paletaContainerAdd.appendChild(bola);
+  });
+
+  atualizarInputCores();
+}
+
+criarPaletaAdd();
+
+// Editar Produto - Paleta
+  const bolasEditar = document.querySelectorAll('#paletaCoresEditar .bola-cor');
+  const inputEditCores = document.getElementById('editCores');
+  let coresSelecionadasEditar = [];
+
+  bolasEditar.forEach(bola => {
+    bola.addEventListener('click', () => {
+      const cor = bola.getAttribute('data-color');
+      if (coresSelecionadasEditar.includes(cor)) {
+        coresSelecionadasEditar = coresSelecionadasEditar.filter(c => c !== cor);
+        bola.classList.remove('selecionada');
+      } else {
+        coresSelecionadasEditar.push(cor);
+        bola.classList.add('selecionada');
+      }
+      inputEditCores.value = coresSelecionadasEditar.join(',');
+    });
+  });
+</script>
+
+</body>
+</html>
