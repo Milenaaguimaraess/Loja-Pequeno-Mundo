@@ -1,10 +1,6 @@
 <h1 align="center">Loja Pequeno Mundo</h1>
 <p align="center"><i>Repositório para projeto realizado no curso de TI-SENAI.</i></p>
 
-<p align="center">
-<img loading="lazy" src="http://img.shields.io/static/v1?label=STATUS&message=CONCLUÍDOcolor=GREEN&style=for-the-badge"/>
-</p>
-
 ## Nome
 ### Pequeno Mundo
 Site para loja fictícia de roupas infantis.
